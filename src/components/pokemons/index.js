@@ -72,8 +72,6 @@ const PokemonsList = () => {
 
   var filteredList = useMemo(getFilteredList, [selectedType, pokemons]);
 
-  console.log(pokemons);
-
   return (
     <Main
       style={{
@@ -82,7 +80,10 @@ const PokemonsList = () => {
       }}
     >
       <Div className="container">
-        <ThemeTogglerButton />
+        <Header>
+          <Logo src="pokemon_logo.png" alt="pokemon logo"></Logo>
+          <ThemeTogglerButton />
+        </Header>
         <H1>Pokédex</H1>
         <Div className="list">
           <Select
@@ -137,7 +138,7 @@ const PokemonsList = () => {
           backgroundColor={theme.button_color}
           hoverColor={theme.hover_color}
         >
-          {isLoading ? "Loading..." : "Load more Pókemons"}
+          {isLoading ? "Loading..." : "Load more Pokémons"}
         </Button>
       </Div>
     </Main>
@@ -157,12 +158,13 @@ const Div = styled.div`
     width: 90%;
     max-width: 1024px;
     height: 100%;
+    margin-top: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
     @media (max-width: 1023px) {
-      width: 75%;
+      width: 85%;
     }
   }
   &.list {
@@ -171,6 +173,22 @@ const Div = styled.div`
     flex-direction: column;
     gap: 16px;
   }
+`;
+
+const Header = styled.header`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (max-width: 767px) {
+    align-items: center;
+  }
+`;
+
+const Logo = styled.img`
+  width: 25%;
+  height: 25%;
 `;
 
 const H1 = styled.h1`

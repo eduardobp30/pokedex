@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ThemeContext } from "../../contexts/theme-context";
 import { ThemeTogglerButton } from "../theme-toggler-button/theme-toggler-button";
+import { ChevronLeftIcon } from "@primer/octicons-react";
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -11,7 +12,10 @@ function capitalize(str) {
 async function getAbilityDescription(ability) {
   const response = await fetch(`https://pokeapi.co/api/v2/ability/${ability}`);
   const data = await response.json();
-  const abilityDescription = data.flavor_text_entries[0].flavor_text;
+  // const abilityDescription = data.flavor_text_entries[0].flavor_text;
+  const abilityDescription = data.effect_entries.find(
+    (obj) => obj.language.name === "en"
+  ).short_effect;
   return abilityDescription;
 }
 
@@ -32,6 +36,7 @@ const PokemonInfo = () => {
 
   const { id } = useParams();
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,14 +73,12 @@ const PokemonInfo = () => {
     >
       <Header style={{ color: theme.color }}>
         <StyleLink to="/">
-          <img
-            src="/left-arrow.png"
-            alt="return button"
-            style={{ color: theme.color }}
-          ></img>
-          <Return color={theme.color} backgroundColor={theme.background}>
-            Return
-          </Return>
+          <ChevronLeftIcon
+            onClick={() => navigate(-1)}
+            size={"large"}
+            fill={theme.color}
+            aria-label="return"
+          />
         </StyleLink>
         <ThemeTogglerButton />
       </Header>
@@ -171,7 +174,6 @@ const Main = styled.main`
 const Header = styled.header`
   margin-top: 16px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 90%;
   max-width: 1024px;
@@ -180,13 +182,6 @@ const Header = styled.header`
   @media (max-width: 430px) {
     width: 90%;
   }
-`;
-
-const Return = styled.button`
-  color: ${(props) => props.color};
-  font-size: 24px;
-  background-color: ${(props) => props.backgroundColor};
-  cursor: pointer;
 `;
 
 const Section = styled.section`
@@ -215,7 +210,7 @@ const Name = styled.h1`
   text-align: center;
 
   @media (max-width: 767px) {
-    font-size: 64px;
+    font-size: 56px;
   }
 `;
 
@@ -229,7 +224,7 @@ const Img = styled.img`
   border-radius: 20px;
 
   @media (max-width: 767px) {
-    width: 100%;
+    width: 90%;
     margin: 0;
   }
 `;
@@ -246,6 +241,7 @@ const Info = styled.div`
   @media (max-width: 767px) {
     display: flex;
     flex-direction: column;
+    width: 90%;
   }
 `;
 
