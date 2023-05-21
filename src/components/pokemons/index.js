@@ -114,7 +114,11 @@ const PokemonsList = () => {
           <Ul>
             {filteredList.map((pokemon) => {
               return (
-                <Li key={pokemon.id} hoverColor={theme.hover_color}>
+                <Li
+                  key={pokemon.id}
+                  color={theme.color}
+                  hoverColor={theme.hover_color}
+                >
                   <StyleLink to={`/pokemon/${pokemon.id}`}>
                     <Img
                       src={
@@ -132,9 +136,7 @@ const PokemonsList = () => {
         {errorMsg && <p>{errorMsg}</p>}
         <Button
           onClick={loadMore}
-          style={{
-            color: theme.color,
-          }}
+          color={theme.color}
           backgroundColor={theme.button_color}
           hoverColor={theme.hover_color}
         >
@@ -233,6 +235,7 @@ const Li = styled.li`
   height: 250px;
   padding: 24px;
   border: solid;
+  border-color: ${(props) => props.color};
   border-radius: 20px;
   cursor: pointer;
   &:hover {
@@ -286,6 +289,7 @@ const Button = styled.button`
   padding: 18px 32px;
   border-radius: 20px;
   cursor: pointer;
+  color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   &:hover {
     background-color: ${(props) => props.hoverColor};
